@@ -1,63 +1,57 @@
 <script setup>
-	const colors = ["r", "w", "b", "y", "g", "o", "r", "w", "b"];
+	// Stores
+	import { useCubeStore } from "@/stores/cube";
+
+	const cubeStore = useCubeStore();
+
+	const command = ref(null);
+	const submit = () => {
+		const steps = command.value.split(" ");
+		steps.forEach((step) => {
+			const prime = step.includes("'");
+			const double = step.includes("2");
+			cubeStore.rotateFace(step[0], prime, double);
+		});
+	};
+
+	const doCode = (code) => {
+		const steps = code.split(" ");
+		steps.forEach((step) => {
+			const prime = step.includes("'");
+			const double = step.includes("2");
+			cubeStore.rotateFace(step[0], prime, double);
+		});
+	};
+
+	const notation = ["R", "U", "L", "D", "F", "B"];
 </script>
 
 <template>
 	<main>
 		<h1>Hello</h1>
-		<div class="cube">
-			<div class="side null"></div>
-			<div class="side back">
-				<Face :colors="colors" />
-			</div>
-			<div class="side null"></div>
-			<div class="side null"></div>
-			<div class="side left">
-				<Face :colors="colors" />
-			</div>
-			<div class="side top">
-				<Face :colors="colors" />
-			</div>
-			<div class="side right">
-				<Face :colors="colors" />
-			</div>
-			<div class="side bottom">
-				<Face :colors="colors" />
-			</div>
-			<div class="side null"></div>
-			<div class="side front">
-				<Face :colors="colors" />
-			</div>
-			<div class="side null"></div>
-			<div class="side null"></div>
-		</div>
+		<ul>
+			<li>
+				S:
+				<button @click="cubeStore.solveCube()">Solve</button>
+			</li>
+			<li>
+				Flick:
+				<button @click="doCode(`R U R' U'`)">R U R' U'</button>
+			</li>
+			<li v-for="letter in notation">
+				{{ letter }}:
+				<button @click="cubeStore.rotateFace(letter, false, false)">{{ letter }}</button>
+				<button @click="cubeStore.rotateFace(letter, true, false)">{{ letter }}'</button>
+				<button @click="cubeStore.rotateFace(letter, false, true)">{{ letter }}2</button>
+				<button @click="cubeStore.rotateFace(letter.toLowerCase(), false, false)">{{ letter.toLowerCase() }}</button>
+				<button @click="cubeStore.rotateFace(letter.toLowerCase(), true, false)">{{ letter.toLowerCase() }}'</button>
+				<button @click="cubeStore.rotateFace(letter.toLowerCase(), false, true)">{{ letter.toLowerCase() }}2</button>
+			</li>
+		</ul>
+		<form @submit.prevent="submit">
+			<input type="text" v-model="command" />
+			<button>Submit</button>
+		</form>
+		<Cube />
 	</main>
 </template>
-
-<style lang="scss">
-	.cube {
-		display: grid;
-		grid-template-rows: repeat(3, 1fr);
-		grid-template-columns: repeat(4, 1fr);
-
-		.side {
-			background: #ccc;
-			border: 1px solid #000;
-			display: flex;
-			justify-content: center;
-			align-items: center;
-			ul {
-				display: grid;
-				grid-template-columns: repeat(3, 1fr);
-				padding: 0;
-				list-style-type: none;
-
-				li {
-					height: 100px;
-					width: 100px;
-					border: 1px solid black;
-				}
-			}
-		}
-	}
-</style>
