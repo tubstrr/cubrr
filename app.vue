@@ -24,6 +24,7 @@
 	};
 
 	const notation = ["R", "U", "L", "D", "F", "B"];
+	const slices = ["M", "E", "S"];
 </script>
 
 <template>
@@ -46,6 +47,12 @@
 				<button @click="cubeStore.rotateFace(letter.toLowerCase(), false, false)">{{ letter.toLowerCase() }}</button>
 				<button @click="cubeStore.rotateFace(letter.toLowerCase(), true, false)">{{ letter.toLowerCase() }}'</button>
 				<button @click="cubeStore.rotateFace(letter.toLowerCase(), false, true)">{{ letter.toLowerCase() }}2</button>
+			</li>
+			<li v-for="letter in slices">
+				{{ letter }}:
+				<button @click="cubeStore.rotateFace(letter, false, false)">{{ letter }}</button>
+				<button @click="cubeStore.rotateFace(letter, true, false)">{{ letter }}'</button>
+				<button @click="cubeStore.rotateFace(letter, false, true)">{{ letter }}2</button>
 			</li>
 		</ul>
 		<form @submit.prevent="submit">

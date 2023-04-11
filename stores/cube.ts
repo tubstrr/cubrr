@@ -64,6 +64,39 @@ export const useCubeStore = defineStore("cube", {
 				case "B":
 					this.rotateBack(prime, double);
 					break;
+				case "M":
+					this.rotateMiddle(prime, double);
+					break;
+				case "E":
+					this.rotateEquator(prime, double);
+					break;
+				case "S":
+					this.rotateSide(prime, double);
+					break;
+				case "r":
+					this.rotateRight(prime, double);
+					this.rotateMiddle(!prime, double);
+					break;
+				case "l":
+					this.rotateLeft(prime, double);
+					this.rotateMiddle(prime, double);
+					break;
+				case "u":
+					this.rotateUp(prime, double);
+					this.rotateEquator(!prime, double);
+					break;
+				case "d":
+					this.rotateDown(prime, double);
+					this.rotateEquator(prime, double);
+					break;
+				case "f":
+					this.rotateFront(prime, double);
+					this.rotateSide(prime, double);
+					break;
+				case "b":
+					this.rotateBack(prime, double);
+					this.rotateSide(!prime, double);
+					break;
 				default:
 					console.log("not supported at this time");
 					break;
@@ -95,8 +128,8 @@ export const useCubeStore = defineStore("cube", {
 			const indexsToReplace = [6, 7, 8];
 			const facesToRotate = [0, 3, 5, 1];
 			const faceToRotate = 4;
-			this.cube = rotateLayer(this.cube, indexsToReplace, facesToRotate, faceToRotate, prime, "x", true);
-			if (double) this.cube = rotateLayer(this.cube, indexsToReplace, facesToRotate, faceToRotate, prime, "x", true);
+			this.cube = rotateLayer(this.cube, indexsToReplace, facesToRotate, faceToRotate, prime, "x", false);
+			if (double) this.cube = rotateLayer(this.cube, indexsToReplace, facesToRotate, faceToRotate, prime, "x", false);
 		},
 		rotateFront(prime: boolean, double: boolean) {
 			const facesToRotate = [4, 3, 2, 1];
@@ -119,7 +152,6 @@ export const useCubeStore = defineStore("cube", {
 			const facesToRotate = [1, 2, 3, 4];
 			const faceToRotate = 0;
 			const invert = false;
-			// const facesToReverse = [1, 3];
 			const indexMap = {
 				1: [6, 3, 0],
 				2: [0, 1, 2],
@@ -130,6 +162,37 @@ export const useCubeStore = defineStore("cube", {
 
 			if (double) this.rotateBack(false, false);
 			if (prime) this.rotateBack(false, true);
+		},
+		rotateMiddle(prime: boolean, double: boolean) {
+			const indexsToReplace = [1, 4, 7];
+			const facesToRotate = [0, 2, 5, 4];
+			const faceToRotate = -1;
+			this.cube = rotateLayer(this.cube, indexsToReplace, facesToRotate, faceToRotate, prime, "z", true);
+			if (double) this.cube = rotateLayer(this.cube, indexsToReplace, facesToRotate, faceToRotate, prime, "z", true);
+		},
+		rotateEquator(prime: boolean, double: boolean) {
+			const indexsToReplace = [3, 4, 5];
+			const facesToRotate = [0, 3, 5, 1];
+			const faceToRotate = -1;
+			this.cube = rotateLayer(this.cube, indexsToReplace, facesToRotate, faceToRotate, prime, "x", false);
+			if (double) this.cube = rotateLayer(this.cube, indexsToReplace, facesToRotate, faceToRotate, prime, "x", false);
+		},
+		rotateSide(prime: boolean, double: boolean) {
+			const facesToRotate = [4, 3, 2, 1];
+			const faceToRotate = -1;
+			const invert = false;
+			// const facesToReverse = [0, 1, 2];
+			// const facesToReverse = [1, 3];
+			const indexMap = {
+				1: [7, 4, 1],
+				2: [3, 4, 5],
+				3: [1, 4, 7],
+				4: [5, 4, 3]
+			};
+			this.cube = rotateLayer(this.cube, [], facesToRotate, faceToRotate, false, "y", invert, indexMap, []);
+
+			if (double) this.rotateSide(false, false);
+			if (prime) this.rotateSide(false, true);
 		}
 	}
 });
