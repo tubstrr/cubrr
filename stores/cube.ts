@@ -9,9 +9,14 @@ import { rotateFace } from "@/composables/rotateFace";
 import { reverseFace } from "@/composables/reverseFace";
 import { rotateLayer } from "@/composables/rotateLayer";
 
+type face = string[]; //array of cells
+type cubeState = face[]; //array of faces
+type singleMove = { stringNotation: string; state: cubeState };
+type moveLog = singleMove[];
+
 export const useCubeStore = defineStore("cube", {
 	state: () => ({
-		solveState: [
+		solveState: <cubeState>[
 			// Back - 0
 			["r", "r", "r", "r", "r", "r", "r", "r", "r"],
 			// Left - 1
@@ -25,7 +30,7 @@ export const useCubeStore = defineStore("cube", {
 			// Front - 5
 			["o", "o", "o", "o", "o", "o", "o", "o", "o"]
 		],
-		cube: [
+		cube: <cubeState>[
 			// Back - 0
 			["r", "r", "r", "r", "r", "r", "r", "r", "r"],
 			// Left - 1
@@ -38,13 +43,24 @@ export const useCubeStore = defineStore("cube", {
 			["w", "w", "w", "w", "w", "w", "w", "w", "w"],
 			// Front - 5
 			["o", "o", "o", "o", "o", "o", "o", "o", "o"]
-		]
+		],
+		log: <moveLog>[]
 	}),
 	actions: {
+		clearLog() {
+			this.log = [];
+		},
 		solveCube() {
 			this.cube = this.solveState;
+			this.clearLog();
+		},
+		updateCubeState(state: cubeState, index: number = this.log.length) {
+			this.cube = state;
+			this.log = this.log.slice(0, index);
 		},
 		rotateFace(notation: string, prime: boolean, double: boolean) {
+			const stringNotation = notation + (prime ? "'" : "") + (double ? "2" : "");
+			this.log.push({ stringNotation, state: this.cube });
 			switch (notation) {
 				case "R":
 					this.rotateRight(prime, double);
@@ -97,6 +113,17 @@ export const useCubeStore = defineStore("cube", {
 					this.rotateBack(prime, double);
 					this.rotateSide(!prime, double);
 					break;
+				case "x":
+					this.rotateFace("r", prime, double);
+					this.rotateFace("L", !prime, double);
+					break;
+				case "y":
+					this.rotateFace("u", prime, double);
+					this.rotateFace("D", !prime, double);
+					break;
+				case "z":
+					this.rotateFace("f", prime, double);
+					this.rotateFace("B", !prime, double);
 				default:
 					console.log("not supported at this time");
 					break;
