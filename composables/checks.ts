@@ -4,7 +4,7 @@ import * as types from "@/types";
 // Stores
 
 export const orientation = (cube: types.cubeState) => {
-	if (white(cube[4][4])) return cube;
+	if (white(cube[4][4]) && red(cube[0][4])) return cube;
 
 	const whiteFaceRotationMap: types.IndexMapString = {
 		0: "x",
@@ -15,22 +15,44 @@ export const orientation = (cube: types.cubeState) => {
 	};
 
 	let whiteIs = 4;
-	let redIs = 0;
 
 	cube.forEach((face, index) => {
 		if (white(face[4])) whiteIs = index;
+	});
+
+	if (whiteIs !== 4) {
+		const notation = whiteFaceRotationMap[whiteIs];
+		console.log(`🚀 White notation:`, notation);
+		const prime = notation.includes("'");
+		const double = notation.includes("2");
+		cube = doNotation(cube, notation[0], prime, double);
+	}
+
+	let redIs = 0;
+	cube.forEach((face, index) => {
 		if (red(face[4])) redIs = index;
 	});
 
-	console.log(`🚀  whiteIs:`, whiteIs);
-	console.log(`🚀  whiteFaceRotationMap[whiteIs]:`, whiteFaceRotationMap[whiteIs]);
+	if (redIs !== 0) {
+		const redFaceRotationMap: types.IndexMapString = {
+			1: "y",
+			3: "y'",
+			5: "y2"
+		};
+
+		const notation2 = redFaceRotationMap[redIs];
+		const prime2 = notation2.includes("'");
+		const double2 = notation2.includes("2");
+		cube = doNotation(cube, notation2[0], prime2, double2);
+	}
 
 	return cube;
 };
 
 export const cross = (cube: types.cubeState) => {
-	const someWhiteSideEdgesAreBad = whiteSideEdges(cube).some((color) => color === false);
-	if (someWhiteSideEdgesAreBad) return someWhiteSideEdgesAreBad;
+	const edges = whiteSideEdges(cube);
+	const someWhiteSideEdgesAreBad = edges.some((color) => color === false);
+	if (someWhiteSideEdgesAreBad) return edges;
 
 	return true;
 };

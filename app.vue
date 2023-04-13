@@ -10,14 +10,6 @@
 	const { log, cube } = storeToRefs(cubeStore);
 
 	const command = ref(null);
-	const submit = () => {
-		const steps = command.value.replaceAll("(", "").replaceAll(")", "").split(" ");
-		steps.forEach((step) => {
-			const prime = step.includes("'");
-			const double = step.includes("2");
-			cubeStore.rotateFace(step[0], prime, double);
-		});
-	};
 
 	const doCode = (code) => {
 		cubeStore.addToLog({ stringNotation: code, state: cube.value });
@@ -79,7 +71,7 @@
 			</li>
 		</ul>
 		<button @click="toggleMoves">Toggle all moves</button>
-		<form @submit.prevent="submit">
+		<form @submit.prevent="doCode(command)">
 			<label for="command-input">Run Algorithm</label>
 			<textarea id="command-input" v-model="command" />
 			<button>Submit</button>
