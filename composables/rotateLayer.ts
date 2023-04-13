@@ -1,15 +1,18 @@
+// Types
+import * as types from "@/types";
+
 import { rotateFace } from "@/composables/rotateFace";
 
 export const rotateLayer = (
-	cube: string[][],
-	indexsToReplace: number[],
+	cube: types.cubeState,
+	indexesToReplace: number[],
 	facesToRotate: number[],
 	faceToRotate: number,
 	prime: boolean,
 	axis: string,
-	invert: boolean = false,
-	indexMap: object,
-	facesToReverse: number[] = []
+	invert?: boolean,
+	indexMap?: types.IndexMapType,
+	facesToReverse?: number[]
 ) => {
 	return cube.map((face, faceIndex) => {
 		if (faceIndex === faceToRotate) {
@@ -27,6 +30,14 @@ export const rotateLayer = (
 
 				const pickFromFace = cube[facesToRotate[nextFace]];
 
+				if (!indexMap) {
+					console.error("indexMap is undefined");
+					return cube;
+				}
+				if (!facesToReverse) {
+					console.error("facesToReverse is undefined");
+					return cube;
+				}
 				const indexesToRepalce = indexMap[faceIndex];
 
 				indexesToRepalce.forEach((key, index) => {
@@ -39,7 +50,7 @@ export const rotateLayer = (
 				if (axis == "z" && faceIndex == 0) face = face.reverse();
 				face = face.map((faceValue, index) => {
 					let value = faceValue;
-					if (indexsToReplace.includes(index)) {
+					if (indexesToReplace.includes(index)) {
 						const indexOf = facesToRotate.indexOf(faceIndex);
 						const nextFace = nextIndex(indexOf, facesToRotate.length);
 						const prevFace = prevIndex(indexOf, facesToRotate.length);
