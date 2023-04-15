@@ -7,6 +7,7 @@ import * as types from "@/types";
 // Composables
 import * as check from "@/composables/checks";
 import { doNotation } from "@/composables/doNotation";
+import * as solve from "@/composables/solves";
 
 export const useCubeStore = defineStore("cube", {
 	state: () => ({
@@ -53,8 +54,7 @@ export const useCubeStore = defineStore("cube", {
 			}
 
 			// Solve the cross
-			const moves = ["L"];
-			return moves;
+			return solve.crossMoves(this.cube);
 		},
 		clearLog() {
 			this.log = [];

@@ -22,7 +22,6 @@ export const orientation = (cube: types.cubeState) => {
 
 	if (whiteIs !== 4) {
 		const notation = whiteFaceRotationMap[whiteIs];
-		console.log(`🚀 White notation:`, notation);
 		const prime = notation.includes("'");
 		const double = notation.includes("2");
 		cube = doNotation(cube, notation[0], prime, double);
@@ -52,8 +51,7 @@ export const orientation = (cube: types.cubeState) => {
 export const cross = (cube: types.cubeState) => {
 	const edges = whiteSideEdges(cube);
 	const someWhiteSideEdgesAreBad = edges.some((color) => color === false);
-	if (someWhiteSideEdgesAreBad) return edges;
-
+	if (someWhiteSideEdgesAreBad) return false;
 	return true;
 };
 
@@ -62,8 +60,12 @@ export const whiteFaceEdges = (cube: types.cubeState) => {
 	const whiteRight = white(cube[4].at(5));
 	const whiteBottom = white(cube[4].at(7));
 	const whiteLeft = white(cube[4].at(3));
+	const whiteOnRed = white(cube[0].at(7));
+	const whiteOnOrange = white(cube[5].at(7));
+	const whiteOnGreen = white(cube[1].at(7));
+	const whiteOnBlue = white(cube[3].at(7));
 
-	return [whiteTop, whiteRight, whiteBottom, whiteLeft];
+	return [whiteTop, whiteRight, whiteBottom, whiteLeft, whiteOnRed, whiteOnOrange, whiteOnGreen, whiteOnBlue];
 };
 
 export const whiteSideEdges = (cube: types.cubeState) => {

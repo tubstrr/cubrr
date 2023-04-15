@@ -13,7 +13,7 @@
 
 	const doCode = (code) => {
 		cubeStore.addToLog({ stringNotation: code, state: cube.value });
-		const steps = code.replaceAll("(", "").replaceAll(")", "").split(" ");
+		const steps = code.replaceAll("(", "").replaceAll(")", "").replaceAll('"', "").split(" ");
 		steps.forEach((step) => {
 			const prime = step.includes("'");
 			const double = step.includes("2");
@@ -42,7 +42,7 @@
 <template>
 	<main>
 		<h1>Cubrr</h1>
-		<ul>
+		<ul class="moves">
 			<li>
 				Helpers:
 				<button @click="scramble()">Scramble</button>
@@ -69,30 +69,40 @@
 				<button @click="doCode(`${letter}'`)">{{ letter }}'</button>
 				<button @click="doCode(`${letter}2`)">{{ letter }}2</button>
 			</li>
+			<li>
+				<button @click="toggleMoves">Toggle all moves</button>
+				<form @submit.prevent="doCode(command)">
+					<label for="command-input">Run Algorithm</label>
+					<textarea id="command-input" v-model="command" />
+					<button>Submit</button>
+				</form>
+			</li>
 		</ul>
-		<button @click="toggleMoves">Toggle all moves</button>
-		<form @submit.prevent="doCode(command)">
-			<label for="command-input">Run Algorithm</label>
-			<textarea id="command-input" v-model="command" />
-			<button>Submit</button>
-		</form>
 		<ul class="move-log">
 			<li>Move Log:</li>
 			<li v-for="(move, index) in log" :key="move.state">
 				<button @click="cubeStore.updateCubeState(move.state, index)">{{ index }}: {{ move.stringNotation }}</button>
 			</li>
 		</ul>
-		<Cube />
+		<Cube class="hide" />
 	</main>
 </template>
 
 <style lang="scss">
 	main {
+		.hide {
+			pointer-events: none;
+			user-select: none;
+		}
 		.move-log {
 			list-style: none;
 			position: fixed;
-			top: 0;
+			bottom: 0;
 			right: 0;
+		}
+		.moves {
+			position: fixed;
+			bottom: 0;
 		}
 	}
 </style>
