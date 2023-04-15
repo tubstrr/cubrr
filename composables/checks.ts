@@ -48,11 +48,31 @@ export const orientation = (cube: types.cubeState) => {
 	return cube;
 };
 
+export const F2L = (cube: types.cubeState) => {
+	const pairs = F2LPairs(cube);
+	const somePairsAreBad = pairs.some((pair) => pair === false);
+	if (somePairsAreBad) return false;
+	return true;
+};
+
 export const cross = (cube: types.cubeState) => {
 	const edges = whiteSideEdges(cube);
-	const someWhiteSideEdgesAreBad = edges.some((color) => color === false);
+	const someWhiteSideEdgesAreBad = edges.some((edge) => edge === false);
 	if (someWhiteSideEdgesAreBad) return false;
 	return true;
+};
+
+export const F2LPairs = (cube: types.cubeState) => {
+	const redBlue = red(cube[0][3]) && blue(cube[3][1]);
+	const redWhiteBlue = red(cube[0][6]) && white(cube[4][8]) && blue(cube[3][8]);
+	const redGreen = red(cube[0][5]) && green(cube[1][3]);
+	const redWhiteGreen = red(cube[0][8]) && white(cube[4][6]) && green(cube[1][6]);
+	const orangeBlue = orange(cube[5][5]) && blue(cube[3][3]);
+	const orangeWhiteBlue = orange(cube[5][8]) && white(cube[4][2]) && blue(cube[3][6]);
+	const orangeGreen = orange(cube[5][3]) && green(cube[1][5]);
+	const orangeWhiteGreen = orange(cube[5][6]) && white(cube[4][0]) && green(cube[1][8]);
+
+	return [redBlue, redWhiteBlue, redGreen, redWhiteGreen, orangeBlue, orangeWhiteBlue, orangeGreen, orangeWhiteGreen];
 };
 
 export const whiteFaceEdges = (cube: types.cubeState) => {

@@ -42,12 +42,24 @@ export const useCubeStore = defineStore("cube", {
 		log: <types.moveLog>[]
 	}),
 	actions: {
+		solveF2L() {
+			// Check orientation
+			this.cube = check.orientation(this.cube);
+
+			// Check to see if the cross is already solved
+			const solved = check.F2L(this.cube);
+			if (typeof solved === "boolean" && solved) {
+				alert("F2L is already solved");
+				return [];
+			}
+			return solve.F2LMoves(this.cube);
+		},
 		solveCross() {
 			// Check orientation
 			this.cube = check.orientation(this.cube);
 
 			// Check to see if the cross is already solved
-			let solved = check.cross(this.cube);
+			const solved = check.cross(this.cube);
 			if (typeof solved === "boolean" && solved) {
 				alert("Cross is already solved");
 				return [];

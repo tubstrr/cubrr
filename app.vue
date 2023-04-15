@@ -37,6 +37,10 @@
 		const cross = cubeStore.solveCross();
 		if (cross.length) doCode(cross.join(" "));
 	};
+	const solveF2L = () => {
+		const F2L = cubeStore.solveF2L();
+		if (F2L.length) doCode(F2L.join(" "));
+	};
 </script>
 
 <template>
@@ -48,6 +52,7 @@
 				<button @click="scramble()">Scramble</button>
 				<button @click="cubeStore.solveCube()">Solve</button>
 				<button @click="solveCross()">Solve Cross</button>
+				<button @click="solveF2L()">Solve F2L</button>
 			</li>
 			<li>
 				Fun:
