@@ -14,6 +14,7 @@
 	const doCode = (code) => {
 		cubeStore.addToLog({ stringNotation: code, state: cube.value });
 		const steps = code.replaceAll("(", "").replaceAll(")", "").replaceAll('"', "").split(" ");
+		console.log(`🚀  steps:`, steps);
 		steps.forEach((step) => {
 			const prime = step.includes("'");
 			const double = step.includes("2");
