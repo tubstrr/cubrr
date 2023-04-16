@@ -63,16 +63,43 @@ export const cross = (cube: types.cubeState) => {
 };
 
 export const F2LPairs = (cube: types.cubeState) => {
-	const redBlue = red(cube[0][3]) && blue(cube[3][1]);
-	const redWhiteBlue = red(cube[0][6]) && white(cube[4][8]) && blue(cube[3][8]);
-	const redGreen = red(cube[0][5]) && green(cube[1][3]);
-	const redWhiteGreen = red(cube[0][8]) && white(cube[4][6]) && green(cube[1][6]);
-	const orangeBlue = orange(cube[5][5]) && blue(cube[3][3]);
-	const orangeWhiteBlue = orange(cube[5][8]) && white(cube[4][2]) && blue(cube[3][6]);
-	const orangeGreen = orange(cube[5][3]) && green(cube[1][5]);
-	const orangeWhiteGreen = orange(cube[5][6]) && white(cube[4][0]) && green(cube[1][8]);
+	const positionsToCheck = [3, 4, 5, 6, 7, 8];
+	const whiteFace = !cube[4].map((color) => white(color)).some((state) => state === false);
+	const orangeFace = !cube[5]
+		.map((color, index) => {
+			if (positionsToCheck.includes(index)) return orange(color);
+			return true;
+		})
+		.some((state) => state === false);
+	const redFace = !cube[0]
+		.map((color, index) => {
+			if (positionsToCheck.includes(index)) return red(color);
+			return true;
+		})
+		.some((state) => state === false);
+	const greenFace = !cube[1]
+		.map((color, index) => {
+			if (positionsToCheck.includes(index)) return green(color);
+			return true;
+		})
+		.some((state) => state === false);
+	const blueFace = !cube[3]
+		.map((color, index) => {
+			if (positionsToCheck.includes(index)) return blue(color);
+			return true;
+		})
+		.some((state) => state === false);
+	return [whiteFace, orangeFace, redFace, greenFace, blueFace];
+	// const redBlue = red(cube[0][3]) && blue(cube[3][1]);
+	// const redWhiteBlue = red(cube[0][6]) && white(cube[4][8]) && blue(cube[3][8]);
+	// const redGreen = red(cube[0][5]) && green(cube[1][3]);
+	// const redWhiteGreen = red(cube[0][8]) && white(cube[4][6]) && green(cube[1][6]);
+	// const orangeBlue = orange(cube[5][5]) && blue(cube[3][3]);
+	// const orangeWhiteBlue = orange(cube[5][8]) && white(cube[4][2]) && blue(cube[3][6]);
+	// const orangeGreen = orange(cube[5][3]) && green(cube[1][5]);
+	// const orangeWhiteGreen = orange(cube[5][6]) && white(cube[4][0]) && green(cube[1][8]);
 
-	return [redBlue, redWhiteBlue, redGreen, redWhiteGreen, orangeBlue, orangeWhiteBlue, orangeGreen, orangeWhiteGreen];
+	// return [redBlue, redWhiteBlue, redGreen, redWhiteGreen, orangeBlue, orangeWhiteBlue, orangeGreen, orangeWhiteGreen];
 };
 
 export const whiteFaceEdges = (cube: types.cubeState) => {
