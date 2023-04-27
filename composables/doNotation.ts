@@ -55,12 +55,20 @@ export const doNotation = (cube: types.cubeState, notation: string, prime: boole
 			cube = mutate.side(cube, !prime, double);
 			break;
 		case "x":
-			cube = doNotation(cube, "r", prime, double);
-			cube = doNotation(cube, "L", !prime, double);
+			cube = doNotation(cube, "l", !prime, false);
+			cube = doNotation(cube, "R", prime, false);
+			if (double) {
+				cube = doNotation(cube, "l", !prime, false);
+				cube = doNotation(cube, "R", prime, false);
+			}
 			break;
 		case "y":
-			cube = doNotation(cube, "u", prime, double);
-			cube = doNotation(cube, "D", !prime, double);
+			cube = doNotation(cube, "u", prime, false);
+			cube = doNotation(cube, "D", !prime, false);
+			if (double) {
+				cube = doNotation(cube, "u", prime, false);
+				cube = doNotation(cube, "D", !prime, false);
+			}
 			break;
 		case "z":
 			cube = doNotation(cube, "f", prime, false);

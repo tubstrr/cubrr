@@ -42,6 +42,31 @@ export const useCubeStore = defineStore("cube", {
 		log: <types.moveLog>[]
 	}),
 	actions: {
+		solvePLL() {
+			// Check orientation
+			this.cube = check.orientation(this.cube);
+
+			// Check to see if the cross is already solved
+			// const solved = JSON.stringify(this.cube) == JSON.stringify(this.solveState);
+			// if (typeof solved === "boolean" && solved) {
+			// 	alert("PLL is already solved");
+			// 	return [];
+			// }
+			return solve.PLLMoves(this.cube);
+		},
+		solveOLL() {
+			// Check orientation
+			this.cube = check.orientation(this.cube);
+
+			// Check to see if the cross is already solved
+			const solved = check.OLL(this.cube);
+			// console.log(`🚀  solved:`, solved);
+			if (typeof solved === "boolean" && solved) {
+				alert("OLL is already solved");
+				return [];
+			}
+			return solve.OLLMoves(this.cube);
+		},
 		solveF2L() {
 			// Check orientation
 			this.cube = check.orientation(this.cube);

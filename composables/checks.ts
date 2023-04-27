@@ -48,6 +48,26 @@ export const orientation = (cube: types.cubeState) => {
 	return cube;
 };
 
+export const isSolved = (cube: types.cubeState) => {
+	const solvedState = [
+		["r", "r", "r", "r", "r", "r", "r", "r", "r"],
+		["g", "g", "g", "g", "g", "g", "g", "g", "g"],
+		["y", "y", "y", "y", "y", "y", "y", "y", "y"],
+		["b", "b", "b", "b", "b", "b", "b", "b", "b"],
+		["w", "w", "w", "w", "w", "w", "w", "w", "w"],
+		["o", "o", "o", "o", "o", "o", "o", "o", "o"]
+	];
+
+	return JSON.stringify(cube) === JSON.stringify(solvedState);
+};
+export const OLL = (cube: types.cubeState) => {
+	return !cube[2]
+		.map((color, index) => {
+			return yellow(color);
+		})
+		.some((state) => state === false);
+};
+
 export const F2L = (cube: types.cubeState) => {
 	const pairs = F2LPairs(cube);
 	const somePairsAreBad = pairs.some((pair) => pair === false);
